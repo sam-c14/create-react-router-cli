@@ -1,0 +1,39 @@
+{
+  "name": "create-feature-router-cli",
+  "version": "1.0.0",
+  "description": "A CLI tool to scaffold a react-router project with any mode and a feature driven folder approach",
+  "main": "index.js",
+  "bin": {
+    "create-feature-router": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "cli",
+    "generator",
+    "folder-structure",
+    "boilerplate",
+    "vite",
+    "react-router",
+    "template",
+    "project-structure",
+    "scaffolding",
+    "screaming-architecture"
+  ],
+  "author": "Samuel, Affah",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^11.3.1",
+    "inquirer": "^12.9.4"
+  },
+   "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sam-c14/create-react-router-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sam-c14/create-react-router-cli/issues"
+  },
+  "homepage": "https://github.com/sam-c14/create-react-router-cli#readme"
+}

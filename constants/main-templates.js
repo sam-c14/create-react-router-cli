@@ -188,7 +188,7 @@ export default function Home() {
 }
 `
 
-export {
+module.exports = {
   constantsConfigTemplate,
   authConfigTemplate,
   loginTemplate,

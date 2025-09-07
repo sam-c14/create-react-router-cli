@@ -206,6 +206,5 @@ module.exports = {
   frameworkModeAppClientRender,
   frameworkModeRootTemplate,
   frameworkModeConfigTemplate,
-  frameworkModeViteConfig,
   gitIgnoreTemplate,
 };

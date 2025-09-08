@@ -36,7 +36,7 @@ async function promptUser() {
         else if (/^([A-Za-z\-\_\d])+$/.test(input)) return true;
         return "Project name may only include letters, numbers, underscores and hashes.";
       },
-      default: argProjectName || "react-router-project",
+      default: "react-router-project",
       when: (_) => argProjectName === undefined, // When a user initializes with a project name in cli
     },
     {
@@ -54,10 +54,11 @@ async function initializeProject() {
   console.log("Initializing project...");
 
   const answers = await promptUser();
+  const [, , argProjectName] = process.argv;
 
   const packageManager = answers.packageManager;
   const reactRouterMode = answers.routerMode;
-  const projectName = answers.projectName;
+  const projectName = answers.projectName ?? argProjectName;
   const includeTailwindCss = answers.includeTailwindCss === "Y";
 
   if (reactRouterMode.toLowerCase() !== "framework")

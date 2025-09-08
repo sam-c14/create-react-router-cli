@@ -1,6 +1,6 @@
 {
   "name": "create-feature-router",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A CLI tool to scaffold a react-router project with any mode and a feature driven folder approach",
   "main": "index.js",
   "bin": {

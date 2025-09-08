@@ -1,7 +1,12 @@
 #!/usr/bin/env node
-const inquirer = require("inquirer");
-const { createViteProject } = require("../lib/createViteProject");
+const { createPromptModule } = require("inquirer");
+const {
+  createReactRouterDeclarativeOrDataMode,
+  createReactRouterFrameworkMode,
+} = require("../lib/createViteProject");
 const { generateStructure } = require("../lib/generateStructure");
+
+const prompt = createPromptModule();
 
 async function promptUser() {
   const questions = [
@@ -17,7 +22,7 @@ async function promptUser() {
       type: "list",
       name: "packageManager",
       message: "What package manager would you like to use?",
-      choices: ["Npm", "Pnpm", "Yarn", "Bun"],
+      choices: ["npm", "pnpm", "yarn", "bun"],
     },
     {
       type: "input",
@@ -31,11 +36,11 @@ async function promptUser() {
     {
       type: "input",
       name: "hasTailwindCss",
-      message: "Do you want tailwindcss with this project: [Y/n]",
+      message: "Do you want tailwindcss with this project [Y/n]:",
     },
   ];
 
-  return inquirer.prompt(questions);
+  return prompt(questions);
 }
 
 async function initializeProject() {
@@ -48,8 +53,11 @@ async function initializeProject() {
   const projectName = answers.projectName;
   const hasTailwindCss = answers.hasTailwindCss === "Y";
 
-  await createViteProject(projectName, packageManager);
+  if (reactRouterMode.toLowerCase() !== "framework")
+    await createReactRouterDeclarativeOrDataMode(projectName, packageManager);
+  else await createReactRouterFrameworkMode(projectName, packageManager);
+
   await generateStructure(reactRouterMode, packageManager, hasTailwindCss);
 }
 
-initializeProject().catch(console.error)
+initializeProject().catch(console.error);

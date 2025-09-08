@@ -8,8 +8,11 @@ const { generateStructure } = require("../lib/generateStructure");
 
 const prompt = createPromptModule();
 
+const DEFAULT_PROJECT_NAME = "react-router-project"
+
 async function promptUser() {
   const [, , argProjectName] = process.argv;
+  const defaultProjectName = argProjectName?.trim?.()
 
   const questions = [
     {
@@ -36,8 +39,8 @@ async function promptUser() {
         else if (/^([A-Za-z\-\_\d])+$/.test(input)) return true;
         return "Project name may only include letters, numbers, underscores and hashes.";
       },
-      default: "react-router-project",
-      when: (_) => argProjectName === undefined, // When a user initializes with a project name in cli
+      default: DEFAULT_PROJECT_NAME,
+      when: (_) => argProjectName === undefined || !defaultProjectName?.length, // When a user initializes with a project name in cli
     },
     {
       type: "input",
@@ -55,10 +58,11 @@ async function initializeProject() {
 
   const answers = await promptUser();
   const [, , argProjectName] = process.argv;
+  const defaultProjectName = argProjectName?.trim?.() ?? DEFAULT_PROJECT_NAME
 
   const packageManager = answers.packageManager;
   const reactRouterMode = answers.routerMode;
-  const projectName = answers.projectName ?? argProjectName;
+  const projectName = answers.projectName ?? defaultProjectName;
   const includeTailwindCss = answers.includeTailwindCss === "Y";
 
   if (reactRouterMode.toLowerCase() !== "framework")

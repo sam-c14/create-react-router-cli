@@ -9,6 +9,8 @@ const { generateStructure } = require("../lib/generateStructure");
 const prompt = createPromptModule();
 
 async function promptUser() {
+  const [, , argProjectName] = process.argv;
+
   const questions = [
     {
       type: "list",
@@ -34,6 +36,8 @@ async function promptUser() {
         else if (/^([A-Za-z\-\_\d])+$/.test(input)) return true;
         return "Project name may only include letters, numbers, underscores and hashes.";
       },
+      default: argProjectName || "react-router-project",
+      when: (_) => argProjectName === undefined, // When a user initializes with a project name in cli
     },
     {
       type: "input",

@@ -198,5 +198,4 @@ module.exports = {
   frameworkModeAppClientRender,
   frameworkModeRootTemplate,
   frameworkModeConfigTemplate,
-  gitIgnoreTemplate,
 };

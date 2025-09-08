@@ -1,11 +1,11 @@
 const constantsConfigTemplate = `export const SUPPORTED_LANGUAGES = ["en", "fr", "es"];\n`;
 
 const authConfigTemplate = `
-    export const authConfig = {
-        tokenStorageKey: "access_token",
-        refreshTokenKey: "refresh_token",
-        sessionTimeout: 3600, // in seconds
-    };\n`;
+export const authConfig = {
+  tokenStorageKey: "access_token",
+  refreshTokenKey: "refresh_token",
+  sessionTimeout: 3600, // in seconds
+};\n`;
 
 const loginTemplate = `
 import React from "react";
@@ -46,7 +46,6 @@ export default function Login() {
           </button>
         </form>
 
-        {/* Footer */}
         <p className="mt-4 text-xs text-center text-gray-600">
           Don’t have an account?{" "}
           <a href="#" className="text-indigo-600 hover:underline">
@@ -98,20 +97,29 @@ export function useLogin() {
 `;
 
 const sharedProvidersTemplate = `
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode, useMemo } from "react";
 
-type AppContextType = {
+interface AppContextType {
   user: string | null;
   setUser: (user: string | null) => void;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export function AppProvider({ children }: { children: ReactNode }) {
+interface AppProviderProps { 
+  children: ReactNode;
+}
+
+export function AppProvider({ children }: Readonly<AppProviderProps>) {
   const [user, setUser] = useState<string | null>(null);
 
+  const value = useMemo(() => ({
+    user, 
+    setUser
+  }), [user, setUser])
+
   return (
-    <AppContext.Provider value={{ user, setUser }}>
+    <AppContext.Provider value={value}>
       {children}
     </AppContext.Provider>
   );
@@ -127,31 +135,27 @@ export function useAppContext() {
 `;
 
 const layoutTemplate = `
-import React, { ReactNode } from "react";
+import { Outlet, NavLink } from "react-router"
 
-type LayoutProps = {
-  children: ReactNode;
-};
-
-export default function Layout({ children }: LayoutProps) {
+export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <header className="bg-white shadow-md">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-          <h1 className="text-lg font-semibold text-gray-800">MyApp</h1>
+        <div className="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
+          <NavLink to="/" className="text-lg text-blue-800 font-semibold">MyApp</NavLink>
           <nav className="space-x-4 text-sm text-gray-600">
-            <a href="#" className="hover:text-indigo-600">Home</a>
-            <a href="#" className="hover:text-indigo-600">About</a>
-            <a href="#" className="hover:text-indigo-600">Contact</a>
+            <NavLink to="/" className="hover:text-blue-600 transition-colors sm:hover:scale-105">Home</NavLink>
+            <NavLink to="/auth/login" className="hover:text-blue-600 transition-colors sm:hover:scale-105">Login</NavLink>
+            <NavLink to="https://github.com/sam-c14/create-react-router-cli.git" className="hover:text-blue-600 transition-colors sm:hover:scale-105">Contact</NavLink>
           </nav>
         </div>
       </header>
 
-      <main className="flex-1 max-w-6xl mx-auto px-4 py-6">
-        {children}
+      <main className="flex-1 w-full mx-auto">
+        <Outlet />
       </main>
 
-      <footer className="bg-white border-t mt-6">
+      <footer className="bg-white border-t border-t-gray-100 pt-3 pb-2">
         <div className="max-w-6xl mx-auto px-4 py-3 text-sm text-gray-500 text-center">
           © {new Date().getFullYear()} Your company. All rights reserved.
         </div>
@@ -162,25 +166,31 @@ export default function Layout({ children }: LayoutProps) {
 `;
 
 const homePageTemplate = `
+import Button from "../../ui/button/button";
+
 export default function Home() {
+  const goToRepo = () =>
+    window.open(
+      "https://github.com/sam-c14/create-react-router-cli.git",
+      "_blank"
+    );
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-white p-6">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-50 via-white to-indigo-50 p-6">
       <div className="max-w-2xl text-center space-y-6">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-          Welcome to Your App
+          Welcome 👋
         </h1>
         <p className="text-lg text-gray-600">
-          A minimalistic starting point for your project.  
-          Clean, responsive, and easy to extend.
+          A minimalistic starting point for your project. Clean, responsive, and
+          easy to extend.
         </p>
 
         <div className="flex flex-wrap justify-center gap-4">
-          <button className="px-6 py-3 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition">
-            Get Started
-          </button>
-          <button className="px-6 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition">
+          <Button variant="primary">Get Started</Button>
+          <Button variant="secondary" onClick={goToRepo}>
             Learn More
-          </button>
+          </Button>
         </div>
       </div>
     </main>

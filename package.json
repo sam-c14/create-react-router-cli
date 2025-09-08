@@ -28,7 +28,7 @@
     "fs-extra": "^11.3.1",
     "inquirer": "^12.9.4"
   },
-   "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/sam-c14/create-react-router-cli.git"
   },

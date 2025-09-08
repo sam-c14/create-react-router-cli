@@ -12,10 +12,10 @@ const buttonElement = `
 `;
 
 const buttonTemplate = `
-import React from "react";
+import { type ReactNode } from "react";
 
-interface ButtonProps = {
-  children: React.ReactNode;
+interface ButtonProps {
+  children: ReactNode;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary" | "danger";
@@ -30,13 +30,13 @@ export default function Button({
   variant = "primary",
   disabled = false,
   className = "",
-}: ButtonProps) {
+}: Readonly<ButtonProps>) {
   const baseStyles =
-    "px-4 py-2 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 transition";
+    "px-7 py-3 rounded-lg text-sm cursor-pointer font-medium focus:outline-none focus:ring-2 transition";
 
   const variants: Record<typeof variant, string> = {
     primary:
-      "bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500",
+      "bg-blue-600 text-white hover:bg-blue-700 focus:ring-indigo-500",
     secondary:
       "bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-400",
     danger:
@@ -52,12 +52,12 @@ export default function Button({
 `;
 
 const drawerTemplate = `
-import React from "react";
+import { type ReactNode } from "react";
 
-interface DrawerProps = {
+interface DrawerProps {
   open: boolean;
   onClose: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
   position?: "left" | "right";
 };
 
@@ -66,12 +66,12 @@ export default function Drawer({
   onClose,
   children,
   position = "right",
-}: DrawerProps) {
+}: Readonly<DrawerProps>) {
   return (
     <>
       {/* Overlay */}
       {open && (
-        <div
+        <button
           aria-label="drawer-Overlay"
           className="fixed inset-0 bg-black/40 z-40"
           onClick={onClose}
@@ -119,7 +119,7 @@ export { formatDate, joinClassNames };
 const iconsTemplate = `
 import React from "react";
 
-type Props = {
+interface Props {
   size?: number | string;
   strokeWidth?: number;
   className?: string;
@@ -131,7 +131,7 @@ export function IconSearch({
   strokeWidth = 2,
   className,
   title,
-}: Props) {
+}: Readonly<Props>) {
   return (
     <svg
       width={size}
@@ -143,7 +143,7 @@ export function IconSearch({
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
-      role={title ? "img" : "presentation"}
+      aria-label={title}
       aria-hidden={title ? undefined : true}
     >
       {title ? <title>{title}</title> : null}
@@ -158,10 +158,27 @@ const indexIconTemplate = `
 export * from "./magnifying-glass";
 `;
 
+const indexHtmlTemplate = `
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Feature Router App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+`
+
 module.exports = {
   buttonTemplate,
   drawerTemplate,
   utilsTemplate,
   iconsTemplate,
   indexIconTemplate,
+  indexHtmlTemplate
 };

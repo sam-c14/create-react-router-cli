@@ -11,7 +11,7 @@ export default [
   // pattern ^           ^ module file
   layout("./features/shared/layout/layout.tsx", [
     index("./features/base/home.tsx"),
-  ]);
+  ])
 ] satisfies RouteConfig;
 `;
 
@@ -30,21 +30,19 @@ export const router = createBrowserRouter([
 `;
 
 const declarativeRouteTemplate = `
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router";
 import Login from "./features/auth/login";
 import Layout from "./features/shared/layout/layout";
 import Home from "./features/base/home";
 
 export default function AppRoutes() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/auth/login" element={<Login />} />
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-        </Route>
-      </Routes>
-    </Router>
+   <Routes>
+      <Route path="/auth/login" element={<Login />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+      </Route>
+    </Routes>
   );
 }
 `;
@@ -58,7 +56,7 @@ import './index.css'
 
 const root = document.getElementById('root');
 
-createRoot(!).render(
+createRoot(root!).render(
   <StrictMode>
     <RouterProvider router={router} />
   </StrictMode>,
@@ -74,10 +72,12 @@ import AppRoutes from './routes'
 
 const root = document.getElementById('root')
 
-createRoot(root).render(
- <BrowserRouter>
-    <AppRoutes />
-  </BrowserRouter>,
+createRoot(root!).render(
+ <StrictMode>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  </StrictMode>
 )
 `;
 
@@ -85,7 +85,7 @@ const frameworkModeAppClientRender = `
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { HydratedRouter } from "react-router/dom";
-import './index.css'
+import './app.css'
 
 ReactDOM.hydrateRoot(
   document,
@@ -104,8 +104,9 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  LinksFunction
+  type LinksFunction
 } from 'react-router';
+import { type ReactNode } from 'react';
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -120,7 +121,7 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export function Layout({ children }) {
+export function Layout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
       <head>
@@ -186,15 +187,6 @@ export default {
   ssr: true,
   prerender: ["/", "/auth/login"],
 } satisfies Config;
-`;
-
-const gitIgnoreTemplate = `
-.DS_Store
-/node_modules/
-
-# React Router
-/.react-router/
-/build/
 `;
 
 module.exports = {

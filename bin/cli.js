@@ -23,20 +23,23 @@ async function promptUser() {
       name: "packageManager",
       message: "What package manager would you like to use?",
       choices: ["npm", "pnpm", "yarn", "bun"],
+      when: (answers) => answers.routerMode !== "Framework",
     },
     {
       type: "input",
       name: "projectName",
       message: "Enter project name:",
       validate: (input) => {
-        if (/^([A-Za-z\-\_\d])+$/.test(input)) return true;
+        if(input === ".") return true
+        else if (/^([A-Za-z\-\_\d])+$/.test(input)) return true;
         return "Project name may only include letters, numbers, underscores and hashes.";
       },
     },
     {
       type: "input",
-      name: "hasTailwindCss",
-      message: "Do you want tailwindcss with this project [Y/n]:",
+      name: "includeTailwindCss",
+      message: "Include Tailwind CSS? [Y/n]:",
+      when: (answers) => answers.routerMode !== "Framework",
     },
   ];
 
@@ -51,13 +54,13 @@ async function initializeProject() {
   const packageManager = answers.packageManager;
   const reactRouterMode = answers.routerMode;
   const projectName = answers.projectName;
-  const hasTailwindCss = answers.hasTailwindCss === "Y";
+  const includeTailwindCss = answers.includeTailwindCss === "Y";
 
   if (reactRouterMode.toLowerCase() !== "framework")
     await createReactRouterDeclarativeOrDataMode(projectName, packageManager);
-  else await createReactRouterFrameworkMode(projectName, packageManager);
+  else await createReactRouterFrameworkMode(projectName);
 
-  await generateStructure(reactRouterMode, packageManager, hasTailwindCss);
+  await generateStructure(reactRouterMode, packageManager, includeTailwindCss);
 }
 
 initializeProject().catch(console.error);

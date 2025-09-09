@@ -487,7 +487,7 @@ body{
 }
 `;
 
-export {
+module.exports = {
   homePageCustomTemplate,
   layoutCustomTemplate,
   loginCustomTemplate,

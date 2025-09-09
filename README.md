@@ -12,11 +12,11 @@ A cli tool for initializing a react-router app with any of the modes, and also a
 ## 🚀 Quick Start
 Create New Project
 ```
-npx create-feature-router-cli
+npx create-feature-router my-app
 # or
-pnpm dlx create-feature-router-cli
+pnpm dlx create-feature-router my-app
 # or
-bunx create-feature-router-cli
+bunx create-feature-router my-app
 ```
 
 Select the React Router mode you would like to initalize the project with and follow the remaining prompts.
